@@ -5,7 +5,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import * as _ from 'lodash';
-import { getFocusableEls, isActiveElement, isTabPressed, isEscPressed } from '@sparkdesignsystem/spark';
+import {
+  getFocusableEls,
+  isActiveElement,
+  isTabPressed,
+  isEscPressed,
+} from '@sparkdesignsystem/spark';
 import SprkSpinner from '../SprkSpinner/SprkSpinner';
 import CloseButton from './components/CloseButton/CloseButton';
 import ModalFooter from './components/ModalFooter/ModalFooter';
@@ -158,11 +163,15 @@ class SprkModal extends Component {
   }
 
   attachListeners() {
-    window.addEventListener('keydown', this.handleKeyEvents);
+    if (window) {
+      window.addEventListener('keydown', this.handleKeyEvents);
+    }
   }
 
   removeListeners() {
-    window.removeEventListener('keydown', this.handleKeyEvents);
+    if (window) {
+      window.removeEventListener('keydown', this.handleKeyEvents);
+    }
   }
 
   render() {
@@ -246,9 +255,7 @@ class SprkModal extends Component {
                     additionalClasses="sprk-o-Stack__item"
                   />
                 )}
-                <div className="sprk-b-TypeBodyTwo">
-                  {children}
-                </div>
+                <div className="sprk-b-TypeBodyTwo">{children}</div>
               </div>
 
               {isChoice && (

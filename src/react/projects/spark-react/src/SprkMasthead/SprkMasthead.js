@@ -24,7 +24,10 @@ class SprkMasthead extends Component {
     this.toggleNarrowNav = this.toggleNarrowNav.bind(this);
     this.toggleScrollEvent = this.toggleScrollEvent.bind(this);
     this.checkScrollDirection = this.checkScrollDirection.bind(this);
-    this.throttledCheckScrollDirection = throttle(this.checkScrollDirection, 500);
+    this.throttledCheckScrollDirection = throttle(
+      this.checkScrollDirection,
+      500,
+    );
     this.toggleMenu = this.toggleMenu.bind(this);
     this.checkIfNarrowLayout = this.checkIfNarrowLayout.bind(this);
     this.checkLayoutOnResize = this.checkLayoutOnResize.bind(this);
@@ -35,7 +38,9 @@ class SprkMasthead extends Component {
   }
 
   componentDidMount() {
-    this.setState({ isNarrowLayout : isElementVisible('.sprk-c-Masthead__menu') });
+    this.setState({
+      isNarrowLayout: isElementVisible('.sprk-c-Masthead__menu'),
+    });
 
     window.addEventListener('scroll', this.setIsScrolled);
     window.addEventListener('orientationchange', this.closeNarrowNavMenu);
@@ -44,9 +49,21 @@ class SprkMasthead extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.setIsScrolled, false);
-    window.removeEventListener('scroll', this.throttledCheckScrollDirection, false);
-    window.removeEventListener('orientationchange', this.closeNarrowNavMenu, false);
-    window.removeEventListener('resize', this.throttledCheckIfNarrowLayout, false);
+    window.removeEventListener(
+      'scroll',
+      this.throttledCheckScrollDirection,
+      false,
+    );
+    window.removeEventListener(
+      'orientationchange',
+      this.closeNarrowNavMenu,
+      false,
+    );
+    window.removeEventListener(
+      'resize',
+      this.throttledCheckIfNarrowLayout,
+      false,
+    );
   }
 
   toggleNarrowNav() {
@@ -71,23 +88,27 @@ class SprkMasthead extends Component {
   }
 
   setIsScrolled() {
-    if (window.scrollY >= 10) {
-      this.setState({ isScrolled: true });
-    } else {
-      this.setState({ isScrolled: false });
+    if (window) {
+      if (window.scrollY >= 10) {
+        this.setState({ isScrolled: true });
+      } else {
+        this.setState({ isScrolled: false });
+      }
     }
   }
 
   getCurrentLayout() {
-    this.setState({ currentLayout : isElementVisible('.sprk-c-Masthead__menu')});
+    this.setState({
+      currentLayout: isElementVisible('.sprk-c-Masthead__menu'),
+    });
   }
 
   checkIfNarrowLayout() {
     if (this.state.isNarrowLayout !== this.state.currentLayout) {
-      this.setState({ isNarrowLayout : this.state.currentLayout });
+      this.setState({ isNarrowLayout: this.state.currentLayout });
       this.toggleScrollEvent();
       if (!this.state.isNarrowLayout) {
-        this.setState({ isHidden : false });
+        this.setState({ isHidden: false });
       }
     }
   }
@@ -99,25 +120,31 @@ class SprkMasthead extends Component {
 
   toggleMenu() {
     if (this.state.scrollDirection === 'down') {
-      this.setState({ isHidden : true });
+      this.setState({ isHidden: true });
     } else {
-      this.setState({ isHidden : false });
+      this.setState({ isHidden: false });
     }
   }
 
   checkScrollDirection() {
     const newDirection = scrollYDirection();
     if (this.state.scrollDirection !== newDirection) {
-      this.setState({ scrollDirection : newDirection });
+      this.setState({ scrollDirection: newDirection });
       this.toggleMenu();
     }
   }
 
   toggleScrollEvent() {
-    if (this.state.isNarrowLayout) {
-      window.addEventListener('scroll', this.throttledCheckScrollDirection);
-    } else {
-      window.removeEventListener('scroll', this.throttledCheckScrollDirection, false);
+    if (window) {
+      if (this.state.isNarrowLayout) {
+        window.addEventListener('scroll', this.throttledCheckScrollDirection);
+      } else {
+        window.removeEventListener(
+          'scroll',
+          this.throttledCheckScrollDirection,
+          false,
+        );
+      }
     }
   }
 

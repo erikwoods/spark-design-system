@@ -13,59 +13,61 @@ class SprkStepperSlider extends Component {
     this.state = {
       cachedTop: props.sliderStyle ? props.sliderStyle.top : undefined,
       cachedSliderRef: this.sliderRef,
-    }
+    };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.sliderStyle && (nextProps.sliderStyle.top != prevState.cachedTop)) {
-      prevState.cachedSliderRef.current.classList.remove('sprk-c-Stepper__slider--active');
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.sliderStyle &&
+      nextProps.sliderStyle.top != prevState.cachedTop
+    ) {
+      prevState.cachedSliderRef.current.classList.remove(
+        'sprk-c-Stepper__slider--active',
+      );
     }
 
     return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sliderStyle.top != this.props.sliderStyle.top) {
-      setTimeout(() => {
-        window.requestAnimationFrame(() => {
-          this.sliderRef.current.classList.add('sprk-c-Stepper__slider--active');
+    if (window) {
+      if (prevProps.sliderStyle.top != this.props.sliderStyle.top) {
+        setTimeout(() => {
+          window.requestAnimationFrame(() => {
+            this.sliderRef.current.classList.add(
+              'sprk-c-Stepper__slider--active',
+            );
+          });
         });
-      });
+      }
     }
   }
 
   render() {
-    const {
-      title,
-      contents,
-      sliderStyle,
-    } = this.props;
+    const { title, contents, sliderStyle } = this.props;
 
     return (
-      <li className={classnames(
-        'sprk-c-Stepper__slider',
-        'sprk-c-Stepper__slider--active',
+      <li
+        className={classnames(
+          'sprk-c-Stepper__slider',
+          'sprk-c-Stepper__slider--active',
         )}
         style={sliderStyle}
-        ref = {this.sliderRef}
+        ref={this.sliderRef}
       >
-        <div className='sprk-c-Stepper__step-content sprk-c-Stepper__step-content--has-description'>
-          <span className="sprk-c-Stepper__step-header sprk-b-Link sprk-b-Link--plain" >
+        <div className="sprk-c-Stepper__step-content sprk-c-Stepper__step-content--has-description">
+          <span className="sprk-c-Stepper__step-header sprk-b-Link sprk-b-Link--plain">
             <span className="sprk-c-Stepper__step-icon sprk-u-Visibility--hidden"></span>
-            <h3 className="sprk-c-Stepper__step-heading" >
-              {title}
-            </h3>
+            <h3 className="sprk-c-Stepper__step-heading">{title}</h3>
           </span>
 
-          <div className="sprk-c-Stepper__step-description" >
-            <p className="sprk-b-TypeBodyTwo">
-              {contents}
-            </p>
+          <div className="sprk-c-Stepper__step-description">
+            <p className="sprk-b-TypeBodyTwo">{contents}</p>
           </div>
         </div>
       </li>
     );
-  };
+  }
 }
 
 SprkStepperSlider.propTypes = {
