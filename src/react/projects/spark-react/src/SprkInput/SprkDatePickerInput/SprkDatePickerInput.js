@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TinyDatePicker from 'tiny-date-picker';
 import { assign } from 'lodash';
 import SprkTextInput from '../SprkTextInput/SprkTextInput';
 
@@ -14,15 +13,27 @@ class SprkDatePickerInput extends Component {
       },
       min: '01/1/2008',
       max: '01/1/2068',
-      format: date => date
-        .toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
-        .replace(/[^ -~]/g, ''),
+      format: date =>
+        date
+          .toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+          })
+          .replace(/[^ -~]/g, ''),
     };
   }
 
   componentDidMount() {
-    const { datePickerConfig } = this.props;
-    TinyDatePicker(this.datePickerInputRef.current, assign(this.tdpConfig, datePickerConfig));
+    import(/* webpackChunkName: "tiny-date-picker" */ 'tiny-date-picker')
+      .then(({ default: TinyDatePicker }) => {
+        const { datePickerConfig } = this.props;
+        TinyDatePicker(
+          this.datePickerInputRef.current,
+          assign(this.tdpConfig, datePickerConfig),
+        );
+      })
+      .catch(error => 'An error occurred while loading the component');
   }
 
   render() {

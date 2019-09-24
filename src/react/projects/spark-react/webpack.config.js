@@ -2,10 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '../../dist/spark-react'),
     filename: 'index.js',
+    chunkFilename: '[name].bundle.js',
     library: '',
     libraryTarget: 'commonjs',
   },
